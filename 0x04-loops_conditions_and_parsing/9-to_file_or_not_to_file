@@ -5,11 +5,11 @@ fi="school"
 if [ -e "$fi" ]
 then
     echo "school file exists"
-    if [ ! -s "$fi" ]
+    if [ -s "$fi" ]
     then
-        echo "school file is empty"
-    else
         echo "school file is not empty"
+    else
+        echo "school file is empty"
     fi
     if [ -f "$fi" ]
     then
