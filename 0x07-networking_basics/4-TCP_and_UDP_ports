@@ -2,4 +2,4 @@
 # Bash script that displays listening ports:
 # Only shows listening sockets, and
 # shows the PID and name of the program to which each socket belongs
-ss -tunlp
+netstat -tunlp
