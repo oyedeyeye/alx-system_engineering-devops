@@ -123,6 +123,6 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server
 #	ForceCommand cvs server
 
 # Personal Setting
-Host 35.153.50.50
+Host 54.236.43.161
   IdentityFile ~/.ssh/school
   PasswordAuthentication no
