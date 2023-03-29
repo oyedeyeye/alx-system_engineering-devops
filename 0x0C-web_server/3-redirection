@@ -36,7 +36,7 @@ sudo sed -i '/^http {/a'"$SERVER_CONFIG" /etc/nginx/sites-enabled/default
 # Restart Nginx
 if [ "$(pgrep -c nginx)" -le 0 ];
 then
-    service nginx start
+        service nginx start
 else
-    service nginx restart
+        service nginx restart
 fi;
