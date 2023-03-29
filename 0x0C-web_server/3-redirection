@@ -16,6 +16,9 @@ SERVER_CONFIG=\
         root /var/www/html;
         index index.html index.htm index.nginx-debian.html;
         server_name _;
+        location / {
+                # remove try_files directive
+        }
         location /redirect_me {
                 rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
         }
