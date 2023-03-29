@@ -28,4 +28,4 @@ then
     service nginx start
 else
     service nginx restart
-fi
+fi;
