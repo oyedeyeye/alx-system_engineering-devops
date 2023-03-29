@@ -9,23 +9,31 @@ sudo ufw allow 'Nginx HTTP'
 mkdir -p /var/www/html/
 sudo chmod -R 755 /var/www
 echo 'Hello World!'> /var/www/html/index.html
-SERVER_CONFIG=\
-"server {
+
+# Define the server configuration block as a variable
+SERVER_CONFIG=$(cat <<EOF
+server {
         listen 80 default_server;
         listen [::]:80 default_server;
         root /var/www/html;
         index index.html index.htm index.nginx-debian.html;
         server_name _;
+
         location / {
-                # remove try_files directive
+                try_files \$uri \$uri/ =404;
         }
+
         location /redirect_me {
-                rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
+                return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
         }
-}"
+}
+EOF
+)
 
-bash -c "echo -e '$SERVER_CONFIG'> /etc/nginx/sites-available/default"
+# Insert the server configuration block into the default Nginx configuration file using sed
+sudo sed -i '/^http {/a'"$SERVER_CONFIG" /etc/nginx/sites-enabled/default
 
+# Restart Nginx
 if [ "$(pgrep -c nginx)" -le 0 ];
 then
     service nginx start
