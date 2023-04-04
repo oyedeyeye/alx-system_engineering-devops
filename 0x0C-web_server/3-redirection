@@ -28,7 +28,7 @@ SERVER_CONFIG="server {
 }"
 
 # Insert the server configuration block into the default Nginx configuration file using sed
-sudo echo "$SERVER_CONFIG"> /etc/nginx/sites-enabled
+echo "$SERVER_CONFIG"> /etc/nginx/sites-enabled
 
 # Restart Nginx
 if [ "$(pgrep -c nginx)" -le 0 ];
