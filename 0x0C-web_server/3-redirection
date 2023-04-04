@@ -11,24 +11,10 @@ sudo chmod -R 755 /var/www
 echo 'Hello World!'> /var/www/html/index.html
 
 # Define the server configuration block as a variable
-SERVER_CONFIG="server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-        root /var/www/html;
-        index index.html index.htm index.nginx-debian.html;
-        server_name _;
-
-        location / {
-                try_files \$uri \$uri/ =404;
-        }
-
-        location ~ /redirect_me {
-                return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-        }
-}"
+redirect_config = "\nrewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
 
 # Insert the server configuration block into the default Nginx configuration file using sed
-echo "$SERVER_CONFIG"> /etc/nginx/sites-enabled
+sed -i "s/server_name _;$/redirect_config/" /etc/nginx/sites-available/default
 
 # Restart Nginx
 if [ "$(pgrep -c nginx)" -le 0 ];
