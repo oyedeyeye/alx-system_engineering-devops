@@ -12,7 +12,9 @@ sudo chmod -R 755 /var/www
 echo 'Hello World!'> /var/www/html/index.html
 
 # Define the server configuration block as a variable
-redirect_config="\nrewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
+redirect_config="\nlocation = /redirect_me { 
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+        }"
 
 # Insert the server configuration block into the default Nginx configuration file using sed
 sed -i "s/server_name _;$/$redirect_config/" /etc/nginx/sites-available/default
