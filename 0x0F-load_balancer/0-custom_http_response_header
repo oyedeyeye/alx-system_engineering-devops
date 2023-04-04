@@ -36,7 +36,7 @@ server_config = "server {
 
 
 # Use sed to replace the default server block with the new configuration
-sed -i '/server {/c\'"$server_config"'' /etc/nginx/sites-available/default
+echo "$server_config"> /etc/nginx/sites-available/default
 
 # Restart nginx
 if [ "$(pgrep nginx)" -le 0 ]; then
