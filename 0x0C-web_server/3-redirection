@@ -3,26 +3,24 @@
 # redirecting to another page
 
 # update server, install and start server
-sudo apt-get update
+sudo apt-get update -y
 sudo apt-get -y install nginx
 sudo ufw allow 'Nginx HTTP'
 mkdir -p /var/www/html/
-sudo chown -R "$USER":"$USER" /var/www/html
-sudo chmod -R 755 /var/www
-echo 'Hello World!'> /var/www/html/index.html
+echo 'Hello World!' | sudo tee /var/www/html/index.html > /dev/null
 
 # Define the server configuration block as a variable
 redirect_config="\n\tlocation = /redirect_me { 
         return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-        }"
+        }\n"
 
 # Insert the server configuration block into the default Nginx configuration file using sed
-sed -i "s/server_name _;/&$redirect_config/" /etc/nginx/sites-available/default
+sudo sed -iE "s/server_name _;/&$redirect_config/" /etc/nginx/sites-available/default
 
 # Restart Nginx
 if [ "$(pgrep -c nginx)" -le 0 ];
 then
-        service nginx start
+        sudo service nginx start
 else
-        service nginx restart
+        sudo service nginx restart
 fi;
