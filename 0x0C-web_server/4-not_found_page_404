@@ -12,7 +12,7 @@ echo 'Hello World!' | sudo tee /var/www/html/index.html > /dev/null
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html > /dev/null
 
 # Define the server configuration block as a variable
-redirect_config="\\\n\n\trewrite ^/(.*)/$ /$1 permanent;\n\n\tlocation = /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
+redirect_config="\\\n\n\trewrite ^/(.*)/$ /\$1 permanent;\n\n\tlocation = /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
 
 # Insert the server configuration block into the default Nginx configuration file using sed
 sudo sed -i "53i $redirect_config" /etc/nginx/sites-available/default
