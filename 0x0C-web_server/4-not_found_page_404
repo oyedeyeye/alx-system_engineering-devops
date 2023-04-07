@@ -1,38 +1,32 @@
 #!/usr/bin/env bash
-#configure a custom 404 page
+# Configure your Nginx server so that /redirect_me is
+# redirecting to another page
 
-sudo apt-get update
+# update server, install and start server
+sudo apt-get update -y
 sudo apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-chmod -R 755 /var/www
-echo 'Hello World' > /var/www/html/index.html
+sudo ufw allow 'Nginx HTTP'
+mkdir -p /var/www/html/
+echo 'Hello World!' | sudo tee /var/www/html/index.html > /dev/null
 
-new_config=\
-"server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
-        root /var/www/html;
-        index index.html index.htm index.nginx-debian.html;
-        server_name _;
-        location / {
-                try_files \$uri \$uri/ =404;
-        }
-        error_page 404 /404.html;
-        location  /404.html {
-            internal;
-        }
-        
-        if (\$request_filename ~ redirect_me){
-            rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
-        }
-}
-"
-echo "Ceci n'est pas une page" > /var/www/html/404.html
-echo "$new_config" > /etc/nginx/sites-available/default
+# Define the server configuration block as a variable
+redirect_config="\\\n\n\trewrite ^/(.*)/$ /$1 permanent;\n\n\tlocation = /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
 
-if [ "$(pgrep nginx)" -le 0 ];
+# Insert the server configuration block into the default Nginx configuration file using sed
+sudo sed -i "53i $redirect_config" /etc/nginx/sites-available/default
+
+# 404 page config
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html > /dev/null
+
+error_config="\\\n\n\terror_page 404 /404.html;\n\n\tlocation = /404.html {\n\t\tinternal;\n\t}\n"
+
+# Inserting into config block
+sudo sed -i "53i $error_config" /etc/nginx/sites-available/default
+
+# Restart Nginx
+if [ "$(pgrep -c nginx)" -le 0 ];
 then
-    service nginx start
+        sudo service nginx start
 else
-    service nginx restart
+        sudo service nginx restart
 fi;
