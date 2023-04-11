@@ -7,21 +7,22 @@
 # Install stable release of 2.7
 sudo apt-get install --no-install-recommends software-properties-common -y
 sudo add-apt-repository ppa:vbernat/haproxy-2.7 -y
+sudo apt-get update -y
 sudo apt-get install haproxy=2.7.\* -y
 
 # Backup configuration file
 sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.real.cfg
 
 SERVER_SETUP=(
-    'frontend http_front'
-        'bind *:80'
-        'stats uri /haproxy?stats'
-        'default_backend http_rear'
+    '\nfrontend http_front\n'
+        '\tbind *:80\n'
+        '\tstats uri /haproxy?stats\n'
+        '\tdefault_backend http_rear\n'
 
-    'backend http_rear'
-        'balance         roundrobin'
-        'server 48604-web-01 54.236.43.161:80 check'
-        'server 48604-web-02 54.157.177.197:80 check'
+    '\nbackend http_rear\n'
+        '\tbalance         roundrobin\n'
+        '\tserver 48604-web-01 54.236.43.161:80 check\n'
+        '\tserver 48604-web-02 54.157.177.197:80 check'
 )
 
 # Append new config to load balancer
