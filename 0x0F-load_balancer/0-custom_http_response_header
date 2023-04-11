@@ -5,38 +5,15 @@
 # Write 0-custom_http_response_header so that it configures a brand new Ubuntu
 # machine to the requirements
 
+HEADER_CONFIG="\n\t\tadd_header X-Served-By: hostname;\n"
 
-sudo apt-get update
-sudo apt-get -y install nginx
-sudo ufw allow 'Nginx HTTP'
-sudo mkdir -p var/www/html var/www/error
-sudo chmod -R 755 /var/www
-echo 'Hello World' > /var/www/html/index.html
-echo "Ceci n'est pas une page" > /var/www/html/404.html
+# Insert the server configuration block into the default Nginx configuration file using sed
+sudo sed -i "48i $HEADER_CONFIG" /etc/nginx/sites-available/default
 
-my_server_config = "server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
-    server_name _;
-    add_header X-Served-By \$hostname;
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-    error_page 404 /404.html;
-    location = /404.html {
-        internal;
-    }
-    if (\$request_filename ~ redirect_me) {
-        rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
-    }
-}"
-
-
-
-# replace the default server block with the new configuration
-echo "$my_server_config"> /etc/nginx/sites-available/default
-
-# Restart nginx
-sudo service nginx restart
+# Restart Nginx
+if [ "$(pgrep -c nginx)" -le 0 ];
+then
+        sudo service nginx start
+else
+        sudo service nginx restart
+fi;
