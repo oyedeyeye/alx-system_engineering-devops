@@ -5,6 +5,27 @@
 # Write 0-custom_http_response_header so that it configures a brand new Ubuntu
 # machine to the requirements
 
+# update server, install and start server
+sudo apt-get update -y
+sudo apt-get -y install nginx
+sudo ufw allow 'Nginx HTTP'
+mkdir -p /var/www/html/
+echo 'Hello World!' | sudo tee /var/www/html/index.html > /dev/null
+# 404 page config
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html > /dev/null
+
+# Define the server configuration block as a variable
+redirect_config="\\\n\n\trewrite ^/(.*)/$ /\$1 permanent;\n\n\tlocation = /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n"
+
+# Insert the server configuration block into the default Nginx configuration file using sed
+sudo sed -i "53i $redirect_config" /etc/nginx/sites-available/default
+
+error_config="\\\n\n\terror_page 404 /404.html;\n\n\tlocation = /404.html {\n\t\tinternal;\n\t}\n"
+
+# Inserting into config block
+sudo sed -i "53i $error_config" /etc/nginx/sites-available/default
+
+
 HEADER_CONFIG="\\\n\t\tadd_header X-Served-By '\$hostname';\n"
 
 # Insert the server configuration block into the default Nginx configuration file using sed
