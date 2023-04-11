@@ -21,8 +21,8 @@ SERVER_SETUP=(
 
     '\nbackend http-backOffice\n'
         '\tbalance         roundrobin\n'
-        '\tserver 48604-web-01 54.236.43.161:80 check\n'
-        '\tserver 48604-web-02 54.157.177.197:80 check'
+        '\tserver web-01 54.236.43.161:80 check\n'
+        '\tserver web-02 54.157.177.197:80 check'
 )
 
 # Append new config to load balancer
