@@ -5,10 +5,10 @@
 # Write 0-custom_http_response_header so that it configures a brand new Ubuntu
 # machine to the requirements
 
-HEADER_CONFIG="\n\t\tadd_header X-Served-By: hostname;\n"
+HEADER_CONFIG="\\\n\t\tadd_header X-Served-By '\$hostname';\n"
 
 # Insert the server configuration block into the default Nginx configuration file using sed
-sudo sed -i "48i $HEADER_CONFIG" /etc/nginx/sites-available/default
+sudo sed -i "49i $HEADER_CONFIG" /etc/nginx/sites-available/default
 
 # Restart Nginx
 if [ "$(pgrep -c nginx)" -le 0 ];
