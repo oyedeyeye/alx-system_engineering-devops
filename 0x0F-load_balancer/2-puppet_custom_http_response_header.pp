@@ -2,14 +2,16 @@
 # The name of the custom HTTP header must be X-Served-By
 # Value of the custom HTTP header must be hostname of server Nginx is on
 
-exec { 'apt-get update':
-    command  => '/usr/bin/apt-get update -y',
+exec { 'server update':
+    command  => 'apt-get update',
+    user     => 'root',
+    provider => 'shell',
 }
 
 package { 'nginx':
     ensure   => 'installed',
     provider => 'apt',
-    require  => Exec['apt-get update'],
+    require  => Exec['server update'],
 }
 
 file_line { 'custom_http_header':
