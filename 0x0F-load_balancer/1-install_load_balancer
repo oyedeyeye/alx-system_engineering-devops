@@ -38,4 +38,8 @@ else
 fi
 
 # Restart HAproxy
-sudo service haproxy restart
+if [ "$(pgrep -c haproxy)" -le 0 ]; then
+        sudo service haproxy start
+else
+        sudo service haproxy restart
+fi
