@@ -31,7 +31,7 @@ SERVER_SETUP=(
 INIT_FILE='/etc/default/haproxy'
 
 if [ "$(grep -Eco '^ENABLED=[01]$' < $INIT_FILE)" -gt 0 ]; then
-        sed -i 's/^ENABLED=0$/ENABLED=1/' "$INIT_FILE"
+        sudo sed -i 's/^ENABLED=0$/ENABLED=1/' "$INIT_FILE"
 else
         echo 'ENABLED=1' | sudo tee -a $INIT_FILE > /dev/null
 fi
