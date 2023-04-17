@@ -19,4 +19,4 @@ sudo ufw allow 80/tcp
 
 # Reload Firewall
 
-sudo ufw enable -y
+sudo ufw enable
