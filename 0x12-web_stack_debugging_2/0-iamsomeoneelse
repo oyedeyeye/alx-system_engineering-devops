@@ -1,1 +1,4 @@
 #!/usr/bin/env bash
+# script that accepts one user argument and run `whoami` under  user passed
+su $1;
+whoami
