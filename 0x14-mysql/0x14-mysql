@@ -8,6 +8,7 @@ sudo apt install -f mysql-client=5.7* mysql-community-server=5.7* mysql-server=5
 
 # Task 1
 sudo mysql
-CREATE USER 'holberton_user'@'localhost' IDENTIFIED BY 'projectcorrection280hbtn';
-GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';
-FLUSH PRIVILEGES;
+sudo mysql -e "CREATE USER 'holberton_user'@'localhost' IDENTIFIED BY 'projectcorrection280hbtn';"
+sudo mysql -e "GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';"
+sudo mysql -e "FLUSH PRIVILEGES;"
+
