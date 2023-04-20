@@ -11,4 +11,9 @@ sudo mysql
 sudo mysql -e "CREATE USER 'holberton_user'@'localhost' IDENTIFIED BY 'projectcorrection280hbtn';"
 sudo mysql -e "GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';"
 sudo mysql -e "FLUSH PRIVILEGES;"
+sudo ufw allow from 54.157.177.197 to any port 3306
 
+sudo sed -i 's/^bind-address.*/bind-address\t= 54.236.43.161/' /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo sed -i '/^\[mysqld\]/a server-id\t= 1' /etc/mysql/mysql.conf.d/mysqld.cnf
+echo -e "\ninnodb_force_recovery\t = 1\nlog_bin\t= /var/log/mysql-bin.log\nbinlog_do_db\t= db" | sudo tee -a /etc/mysql/mysql.conf.d/mysqld.cnf > /dev/null
+sudo systemctl restart mysql
