@@ -13,7 +13,17 @@ sudo mysql -e "GRANT REPLICATION CLIENT ON *.* TO 'holberton_user'@'localhost';"
 sudo mysql -e "FLUSH PRIVILEGES;"
 sudo ufw allow from 54.157.177.197 to any port 3306
 
-sudo sed -i 's/^bind-address.*/bind-address\t= 54.236.43.161/' /etc/mysql/mysql.conf.d/mysqld.cnf
-sudo sed -i '/^\[mysqld\]/a server-id\t= 1' /etc/mysql/mysql.conf.d/mysqld.cnf
-echo -e "\ninnodb_force_recovery\t = 1\nlog_bin\t= /var/log/mysql-bin.log\nbinlog_do_db\t= db" | sudo tee -a /etc/mysql/mysql.conf.d/mysqld.cnf > /dev/null
+sudo sed -i 's/^bind-address.*/bind-address\t= 54.157.177.197/' /etc/mysql/mysql.conf.d/mysqld.cnf
+
+echo -e "\nserver-id\t= 1\nlog_bin\t= /var/log/mysql/mysql-bin.log" | sudo tee -a /etc/mysql/mysql.conf.d/mysqld.cnf > /dev/null
 sudo systemctl restart mysql
+ mysql-bin.002524 |      154
+
+
+# MySQL v 5.7.X other higer versions MASTER = SOURCE
+CHANGE MASTER TO
+    MASTER_HOST='54.236.43.161',
+    MASTER_USER='replica_user',
+    MASTER_PASSWORD='projectcorrection280hbtn',
+    MASTER_LOG_FILE='mysql-bin.002524',
+    MASTER_LOG_POS=154;
