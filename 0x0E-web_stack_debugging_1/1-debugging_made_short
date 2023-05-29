@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 # Configures task 0 to be shorter
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
-pkill -f "$(pgrep 'nginx' | head -1)"
+service nginx restart
+service nginx stop
