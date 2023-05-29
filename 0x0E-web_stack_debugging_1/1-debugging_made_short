@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # Configures task 0 to be shorter
 sudo ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
-pkill -f "$(pgrep 'nginx' | head -1)"
-sudo service nginx stop
+sudo service nginx restart
+kill $(ps aux | grep '[n]ginx' | awk '{print $2}')
